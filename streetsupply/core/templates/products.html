@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Products | StreetSupply{% endblock %}
+
+{% block content %}
+<h1 class="mb-4 mt-4">Products</h1>
+
+<form method="GET" class="mb-4">
+  <div class="input-group">
+    <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search products or suppliers..." />
+    <button class="btn btn-primary" type="submit">Search</button>
+  </div>
+</form>
+
+{% if products %}
+<div class="row row-cols-1 row-cols-md-3 g-4">
+  {% for product in products %}
+  <div class="col">
+    <div class="card h-100 shadow-sm product-card">
+      {% if product.image %}
+        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+      {% else %}
+        <img src="{% static 'default_product.png' %}" class="card-img-top" alt="No image available">
+      {% endif %}
+      <div class="card-body d-flex flex-column">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <p class="card-text text-muted mb-1">
+          Sold by: 
+          <a href="{% url 'vendor_profile' product.supplier.vendor.id %}">
+            {{ product.supplier.company_name }}
+          </a>
+        </p>
+        <p class="card-text mb-1"><strong>Price:</strong> ${{ product.price }} per {{ product.unit }}</p>
+        <p class="card-text mb-3">Stock: {{ product.stock_quantity }} {{ product.unit }}</p>
+        <a href="{% url 'place_order' %}" class="btn btn-success mt-auto">Place Order</a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p>No products found.</p>
+{% endif %}
+{% endblock %}

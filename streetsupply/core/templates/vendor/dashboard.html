@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Vendor Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2>Welcome, {{ vendor.name }}</h2>
+  <a href="{% url 'add_product' %}" class="btn btn-primary mb-4">Add New Product</a>
+
+  {% if products %}
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for product in products %}
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        {% if product.image %}
+          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+        {% else %}
+          <img src="{% static 'default_product.png' %}" class="card-img-top" alt="No image">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text"><strong>Price:</strong> ${{ product.price }} per {{ product.unit }}</p>
+          <p class="card-text">Stock: {{ product.stock_quantity }} {{ product.unit }}</p>
+          <!-- You can add edit/delete buttons here -->
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p>You have no products listed yet.</p>
+  {% endif %}
+</div>
+{% endblock %}

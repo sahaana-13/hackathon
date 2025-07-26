@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">All Orders</h1>
+
+{% if orders %}
+    <ul class="list-group">
+    {% for order in orders %}
+        <li class="list-group-item">
+            <strong>{{ order.vendor.name }}</strong> ordered 
+            <strong>{{ order.quantity }}</strong> × <strong>{{ order.product.name }}</strong><br>
+            From: {{ order.product.supplier.company_name }}<br>
+            Ordered on: {{ order.order_date|date:"M d, Y H:i" }}<br>
+            Status: {% if order.delivered %}<span class="text-success">✅ Delivered</span>{% else %}<span class="text-danger">❌ Pending</span>{% endif %}
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No orders placed yet.</p>
+{% endif %}
+
+<a href="{% url 'product_list' %}" class="btn btn-secondary mt-3">← Back to Products</a>
+{% endblock %}

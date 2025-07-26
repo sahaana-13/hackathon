@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Place an Order{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Place a New Order</h1>
+
+<form method="post" class="mb-3">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Place Order</button>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary ms-2">Cancel</a>
+</form>
+{% endblock %}
