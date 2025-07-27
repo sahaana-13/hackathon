@@ -63,43 +63,24 @@
 <body>
   <div class="login-container">
     <h2>Login</h2>
-    <form id="loginForm">
-      <input type="text" id="username" placeholder="Username" required>
-      <input type="password" id="password" placeholder="Password" required>
+    {% if messages %}
+      <div id="message">
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
+    {% endif %}
+    <form method="post" action="{% url 'login' %}">
+      {% csrf_token %}
+      <input type="text" name="username" placeholder="Username" required autofocus>
+      <input type="password" name="password" placeholder="Password" required>
+      <!-- Preserve the next parameter for redirect after login -->
+      <input type="hidden" name="next" value="{{ next }}">
       <button type="submit">Login</button>
     </form>
-    <div id="message"></div>
     <div class="register-link">
-      Don't have an account? <a href="/register/">Register here</a>.
+      Don't have an account? <a href="{% url 'register' %}">Register here</a>.
     </div>
   </div>
-
-  <script>
-    const form = document.getElementById('loginForm');
-    const messageDiv = document.getElementById('message');
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
-
-      const response = await fetch('/api/token/', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username, password})
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('access_token', data.access);
-        localStorage.setItem('refresh_token', data.refresh);
-        // Redirect to your products page after login
-        window.location.href = '/products/';
-      } else {
-        messageDiv.textContent = 'Login failed: Invalid username or password.';
-      }
-    });
-  </script>
 </body>
 </html>

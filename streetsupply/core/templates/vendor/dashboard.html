@@ -1,33 +1,76 @@
-{% extends 'base.html' %}
-{% block title %}Vendor Dashboard{% endblock %}
+{% extends "base.html" %}
+
+{% block title %}Vendor Dashboard - StreetSupply{% endblock %}
 
 {% block content %}
-<div class="container mt-5">
-  <h2>Welcome, {{ vendor.name }}</h2>
-  <a href="{% url 'add_product' %}" class="btn btn-primary mb-4">Add New Product</a>
+<h1 style="color:#4b0082; margin-bottom: 25px;">Welcome, {{ vendor.name }}</h1>
 
+<section style="margin-bottom: 40px;">
+  <h2 style="margin-bottom: 15px;">Your Products</h2>
   {% if products %}
-  <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for product in products %}
-    <div class="col">
-      <div class="card h-100 shadow-sm">
-        {% if product.image %}
-          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-        {% else %}
-          <img src="{% static 'default_product.png' %}" class="card-img-top" alt="No image">
-        {% endif %}
-        <div class="card-body">
-          <h5 class="card-title">{{ product.name }}</h5>
-          <p class="card-text"><strong>Price:</strong> ${{ product.price }} per {{ product.unit }}</p>
-          <p class="card-text">Stock: {{ product.stock_quantity }} {{ product.unit }}</p>
-          <!-- You can add edit/delete buttons here -->
-        </div>
-      </div>
-    </div>
-    {% endfor %}
-  </div>
+    <ul style="list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;">
+      {% for product in products %}
+        <li style="
+          background: white; 
+          padding: 15px; 
+          border-radius: 12px; 
+          box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+        ">
+          <strong style="font-size: 1.1rem;">{{ product.name }}</strong><br>
+          Price: ${{ product.price }}<br>
+          Supplier: {{ product.supplier.company_name }}
+        </li>
+      {% endfor %}
+    </ul>
   {% else %}
-  <p>You have no products listed yet.</p>
+    <p style="color: #666;">You haven't added any products yet.</p>
   {% endif %}
-</div>
+  <a href="{% url 'add_product' %}" style="
+    margin-top: 15px; 
+    display: inline-block; 
+    background: #6a11cb; 
+    color: white; 
+    padding: 10px 20px; 
+    border-radius: 8px; 
+    font-weight: 600; 
+    text-decoration: none;
+  "
+  onmouseover="this.style.backgroundColor='#4b0082'"
+  onmouseout="this.style.backgroundColor='#6a11cb'"
+  >Add New Product</a>
+</section>
+
+<section>
+  <h2 style="margin-bottom: 15px;">Recent Orders</h2>
+  {% if orders %}
+    <table style="width: 100%; border-collapse: collapse; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 15px rgba(0,0,0,0.1);">
+      <thead style="background-color: #6a11cb; color: white;">
+        <tr>
+          <th style="padding: 12px; text-align: left;">Product</th>
+          <th style="padding: 12px; text-align: left;">Quantity</th>
+          <th style="padding: 12px; text-align: left;">Order Date</th>
+          <th style="padding: 12px; text-align: left;">Delivered</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for order in orders %}
+          <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 12px;">{{ order.product.name }}</td>
+            <td style="padding: 12px;">{{ order.quantity }}</td>
+            <td style="padding: 12px;">{{ order.order_date|date:"M d, Y H:i" }}</td>
+            <td style="padding: 12px;">
+              {% if order.delivered %}
+                <span style="color: green; font-weight: bold;">Yes</span>
+              {% else %}
+                <span style="color: red; font-weight: bold;">No</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color: #666;">No recent orders found.</p>
+  {% endif %}
+</section>
 {% endblock %}

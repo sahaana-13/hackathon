@@ -1,100 +1,32 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Register</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f7f9fc;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-    .register-container {
-      background: white;
-      padding: 30px 40px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-      width: 320px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-      margin-top: 15px;
-    }
-    input[type=text], input[type=email], input[type=password] {
-      width: 100%;
-      padding: 12px 15px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-sizing: border-box;
-      font-size: 16px;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      background-color: #007BFF;
-      color: white;
-      font-size: 16px;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 25px;
-    }
-    button:hover {
-      background-color: #0056b3;
-    }
-    .errorlist {
-      color: red;
-      margin-bottom: 10px;
-      list-style-type: none;
-      padding-left: 0;
-    }
-    .login-link {
-      margin-top: 20px;
-      text-align: center;
-      font-size: 14px;
-    }
-    .login-link a {
-      color: #007BFF;
-      text-decoration: none;
-    }
-    .login-link a:hover {
-      text-decoration: underline;
-    }
-  </style>
-</head>
-<body>
-  <div class="register-container">
-    <h2>Create an Account</h2>
-    <form method="POST" novalidate>
-      {% csrf_token %}
-      {{ form.non_field_errors }}
-      
-      <label for="id_username">Username</label>
-      {{ form.username.errors }}
-      {{ form.username }}
+{% extends "base.html" %}
 
-      <label for="id_email">Email</label>
-      {{ form.email.errors }}
-      {{ form.email }}
+{% block title %}Register - StreetSupply{% endblock %}
 
-      <label for="id_password1">Password</label>
-      {{ form.password1.errors }}
-      {{ form.password1 }}
+{% block content %}
+<h1 style="color:#4b0082; margin-bottom: 25px;">Create an Account</h1>
 
-      <label for="id_password2">Confirm Password</label>
-      {{ form.password2.errors }}
-      {{ form.password2 }}
+<form method="post" style="max-width: 420px; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+  {% csrf_token %}
+  {{ form.as_p }}
 
-      <button type="submit">Register</button>
-    </form>
-    <div class="login-link">
-      Already have an account? <a href="{% url 'login' %}">Login here</a>.
-    </div>
-  </div>
-</body>
-</html>
+  <button type="submit" style="
+    background: #6a11cb; 
+    color: white; 
+    width: 100%; 
+    font-weight: 700; 
+    padding: 12px 0; 
+    border-radius: 8px; 
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 6px 18px rgba(106, 17, 203, 0.5);
+  "
+  onmouseover="this.style.backgroundColor='#4b0082'"
+  onmouseout="this.style.backgroundColor='#6a11cb'"
+  >Register</button>
+</form>
+
+<p style="margin-top: 18px;">
+  Already have an account? <a href="{% url 'login' %}" style="color: #6a11cb; font-weight: 600;">Login here</a>.
+</p>
+{% endblock %}
