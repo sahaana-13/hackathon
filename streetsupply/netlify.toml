@@ -1,5 +1,5 @@
 [build]
-  command = "python manage.py distill-local ../public"
+  command = "cd streetsupply && python manage.py distill-local ../public"
   publish = "public"
 
 [build.environment]
